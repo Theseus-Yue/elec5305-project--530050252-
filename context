@@ -1,0 +1,21 @@
+elec5305-project-530050252/
+├── README.md
+├── code/
+│   ├── main.m
+│   ├── wiener_enhancement.m
+│   ├── dnn_enhancement.m
+│   ├── evaluate_metrics.m
+│   ├── utils/
+│   │   ├── computeSTFT.m
+│   │   ├── plotSpectrogram.m
+│   │   └── audio_normalize.m
+├── data/
+│   ├── traffic_noisy.wav
+│   └── traffic_clean.wav
+├── results/
+│   ├── enhanced_wiener.wav
+│   ├── enhanced_dnn.wav
+│   ├── metrics_table.csv
+│   └── spectrograms/
+└── docs/
+    └── report.pdf
