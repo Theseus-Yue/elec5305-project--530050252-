@@ -33,8 +33,15 @@ Step 2: Lightweight Neural Network
 Step 3: Evaluation
         Evaluate both baseline and neural models using objective speech quality and intelligibility metrics.
 
+
+
+How to prepare the dataset?
+NC: Please check NC's repo.
+DDAE: Download our pre-prepared dataset from Google Drive and unzip it to the root directory of the repo. Then run the prepare_data.py
+
 Reference:
 1. NIDCD, (2022), Hearing Aids
 2. https://github.com/microsoft/DNS-Challenge
 3. Green T, Hilkhuysen G, Huckvale M, Rosen S, Brookes M, Moore A, Naylor P, Lightburn L, Xue W. Speech recognition with a hearing-aid processing scheme combining beamforming with mask-informed speech enhancement. Trends Hear. 2022 Jan-Dec;26:23312165211068629. doi: 10.1177/23312165211068629. PMID: 34985356; PMCID: PMC8744079.
 4. https://github.com/ghnmqdtg/Deep-Learning-Based-Noise-Reduction-and-Speech-Enhancement-System/blob/main/README.md
+5. https://drive.google.com/file/d/1eiRYFSOqBTPAJabmzAV5s0pQaqCE-OVg/view
