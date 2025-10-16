@@ -35,7 +35,8 @@ Step 3: Evaluation
 
 
 
-How to prepare the dataset?
+4. How to prepare the dataset?
+
 NC: Please check NC's repo.
 DDAE: Download our pre-prepared dataset from Google Drive and unzip it to the root directory of the repo. Then run the prepare_data.py
 Combine the clean audio and the noise together to create a noisy conversation scene, which can then be used to start analyzing how to remove the noise.
