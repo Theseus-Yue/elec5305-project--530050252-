@@ -81,10 +81,10 @@ Yet, **traffic noise**—characterized by sudden horns and engine bursts—remai
 
 | Stage | Algorithm | Purpose | Key Features |
 |--------|------------|----------|---------------|
-| **1. Data Visualization** | STFT (Short-Time Fourier Transform) | Inspect original waveform and spectrogram | Frequency analysis of noisy signal |
-| **2. Baseline Denoising** | Spectral Subtraction / Wiener Filter | Remove stationary noise | Simple, effective, fast |
-| **3. Experimental Method** | Wavelet Denoising | Handle non-stationary noise | Multi-resolution filtering |
-| **4. Proposed Model** | Adaptive Spectral Subtraction | Dynamic suppression of traffic noise | Self-adjusting α, temporal smoothing, minimum-statistics noise tracking |
+| **Analyze the original audio.m** | STFT (Short-Time Fourier Transform) | Inspect original waveform and spectrogram | Frequency analysis of noisy signal |
+| **Spectral Subtraction and Wiener Filter.m** | Spectral Subtraction and Wiener Filter | Remove stationary noise | Simple, effective, fast |
+| **noise reduction 1.m** | Wavelet Denoising | Handle non-stationary noise | Multi-resolution filtering |
+| **adaptive_spectral_denoise.m** | Adaptive Spectral Subtraction | Dynamic suppression of traffic noise | Self-adjusting α, temporal smoothing, minimum-statistics noise tracking |
 
 ---
 
