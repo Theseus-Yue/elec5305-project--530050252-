@@ -1,3 +1,13 @@
+% ==========================================================
+% File: noise reduction 1.m
+% Purpose: Experimental wavelet-based denoising (extended work)
+% ----------------------------------------------------------
+% This script compares wavelet thresholding denoising with
+% synthetic noisy signals. It demonstrates potential for
+% non-stationary noise suppression as a complement to
+% spectral-domain methods.
+% ==========================================================
+
 clear; close all; clc;
 
 % 1. Generate or read the original signal
