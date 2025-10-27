@@ -1,3 +1,17 @@
+% ==========================================================
+% File: Spectral Subtraction and Wiener Filter.m
+% Purpose: Baseline implementation of two classical denoising algorithms
+% ----------------------------------------------------------
+% 1. Spectral Subtraction
+% 2. Wiener Filter
+%
+% This code defines both algorithms as functions and applies them
+% to the same input signal for comparison. It computes the resulting
+% SNR improvements and plots time-domain results.
+%
+% Added by: Yue (ELEC5305 Project)
+% ==========================================================
+
 clear all;
 close all;
 
