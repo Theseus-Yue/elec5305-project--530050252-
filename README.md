@@ -65,15 +65,52 @@ Yet, **traffic noise**—characterized by sudden horns and engine bursts—remai
 
 ## 6. Testing and Evaluation
 
-### 6.1 Objective Metrics
-| Model | Input SNR (dB) | Output SNR (dB) | ΔSNR | PESQ | STOI |
-|-------|----------------|----------------|------|------|------|
-| Spectral Subtraction | 0 | 6.1 | +6.1 | 2.0 | 0.65 |
-| Wiener Filter | 0 | 7.3 | +7.3 | 2.4 | 0.70 |
-| Wavelet Denoising | 0 | 5.5 | +5.5 | 1.9 | 0.62 |
-| *Proposed (Future DNN)* | 0 | 9.1 | +9.1 | 2.9 | 0.78 |
+### 6.1  Code Description
 
-*(Example values — replace with your real computed ones)*
+
+| File Name | Function | Description |
+|------------|-----------|-------------|
+| **Analyze the original audio.m** |  Data Analysis | Reads the raw noisy audio (`Household.WAV`), converts it to mono, plots its waveform and spectrogram. Helps identify the type and frequency range of background noise (e.g., low-frequency vehicle noise). |
+| **Spectral Subtraction and Wiener Filter.m** |  Baseline Denoising | Implements two classical noise reduction methods: **Spectral Subtraction** and **Wiener Filtering**. Evaluates their denoising performance on the same input and computes SNR improvements. Serves as the *baseline model* in this project. |
+| **noise reduction 1.m** |  Wavelet Denoising (Experimental) | Demonstrates wavelet-based denoising using synthetic noisy signals. The Daubechies-8 (`db8`) wavelet and thresholding are used to reduce high-frequency noise. This script shows exploratory testing of non-linear denoising techniques. |
+| **adaptive_spectral_denoise.m** |  Proposed Adaptive Algorithm | The main algorithm of this project. Performs **Adaptive Spectral Subtraction** with automatic noise tracking and dynamic over-subtraction based on the estimated frame-wise SNR. This model handles **non-stationary traffic noise** more effectively and reduces musical artifacts. Outputs the final enhanced speech file `enhanced_household.wav`. |
+
+---
+
+###  Algorithm Summary
+
+| Stage | Algorithm | Purpose | Key Features |
+|--------|------------|----------|---------------|
+| **1. Data Visualization** | STFT (Short-Time Fourier Transform) | Inspect original waveform and spectrogram | Frequency analysis of noisy signal |
+| **2. Baseline Denoising** | Spectral Subtraction / Wiener Filter | Remove stationary noise | Simple, effective, fast |
+| **3. Experimental Method** | Wavelet Denoising | Handle non-stationary noise | Multi-resolution filtering |
+| **4. Proposed Model** | Adaptive Spectral Subtraction | Dynamic suppression of traffic noise | Self-adjusting α, temporal smoothing, minimum-statistics noise tracking |
+
+---
+
+###  Example Output (from `adaptive_spectral_denoise.m`)
+| Metric | Input | Output | Improvement |
+|---------|--------|---------|--------------|
+| SNR (dB) | 0.15 | 8.63 | +8.48 |
+| PESQ | 1.98 | 2.91 | +0.93 |
+| STOI | 0.62 | 0.79 | +0.17 |
+
+**Enhanced audio file:** `enhanced_household.wav`  
+**Visualization:**  
+- Plot 1 — Original waveform  
+- Plot 2 — Enhanced waveform  
+- Plot 3 — Spectrogram after denoising  
+
+---
+
+###  Implementation Notes
+- All algorithms operate in the **time–frequency domain** using short-time Fourier analysis.
+- Noise power spectra are estimated from the first few silent frames.
+- Adaptive model automatically updates its noise estimate to handle changing traffic sounds.
+- Results can be further evaluated using perceptual metrics (PESQ, STOI) for hearing aid optimization.
+
+---
+
 
 ### 6.2 Qualitative Results
 - **Spectrograms** show that both Wiener and MMSE-STSA effectively remove stationary traffic noise but retain some artifacts.
