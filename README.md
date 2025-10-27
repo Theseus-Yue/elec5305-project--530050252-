@@ -1,5 +1,3 @@
-#  Title: Speech Enhancement for Hearing Aids in Traffic Noise Environments
-
 # Speech Enhancement for Hearing Aids in Traffic Noise Environments
 
 ## 1. Project Overview
