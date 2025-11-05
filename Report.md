@@ -80,12 +80,14 @@ Temporal smoothing mitigates musical noise.
 All processing was performed in MATLAB.  
 Four key scripts:
 
-| File | Description |
-|------|--------------|
-| `Analyze the original audio.m` | Plots waveform & spectrogram of `household.WAV`. |
-| `Spectral Subtraction and Wiener Filter.m` | Implements baseline filters. |
-| `noise reduction 1.m` | Demonstrates wavelet denoising using synthetic signals. |
-| `adaptive_spectral_denoise.m` | Main adaptive denoising algorithm with automatic noise tracking. |
+
+| **File Name** | **Function** | **Description** |
+|----------------|--------------|-----------------|
+| **Analyze the original audio.m** | *Data Analysis* | Reads the raw noisy audio (`Household.WAV`), converts it to mono, plots its waveform and spectrogram. Helps identify the type and frequency range of background noise (e.g., low-frequency vehicle noise). |
+| **Spectral Subtraction and Wiener Filter.m** | *Baseline Denoising* | Implements two classical noise reduction methods: **Spectral Subtraction** and **Wiener Filtering**. Evaluates their denoising performance on the same input and computes SNR improvements. Serves as the *baseline model* in this project. |
+| **noise reduction 1.m** | *Wavelet Denoising (Experimental)* | Demonstrates wavelet-based denoising using synthetic noisy signals. The **Daubechies-8 (db8)** wavelet and thresholding are used to reduce high-frequency noise. This script shows exploratory testing of non-linear denoising techniques. |
+| **adaptive_spectral_denoise.m** | *Proposed Adaptive Algorithm* | The main algorithm of this project. Performs **Adaptive Spectral Subtraction** with automatic noise tracking and dynamic over-subtraction based on the estimated frame-wise SNR. This model handles **non-stationary traffic noise** more effectively and reduces musical artifacts. Outputs the final enhanced speech file `enhanced_household.wav`. |
+| **evaluation_metrics.m** | *Performance Evaluation* | Compares the performance of all denoising algorithms by calculating SNR improvement across methods. Optionally supports PESQ/STOI metrics. Generates summary statistics and bar plots for quantitative comparison. |
 
 A new script `evaluation_metrics.m` computes SNR, PESQ, and STOI automatically.
 
@@ -140,3 +142,4 @@ The algorithm is simple, efficient, and suitable for real-time DSP deployment, p
 - Valin, J. (2020). *TinyDNN for embedded speech enhancement.* Mozilla Research.  
 
 ---
+
