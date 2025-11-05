@@ -89,7 +89,7 @@ Four key scripts:
 | **adaptive_spectral_denoise.m** | *Proposed Adaptive Algorithm* | The main algorithm of this project. Performs **Adaptive Spectral Subtraction** with automatic noise tracking and dynamic over-subtraction based on the estimated frame-wise SNR. This model handles **non-stationary traffic noise** more effectively and reduces musical artifacts. Outputs the final enhanced speech file `enhanced_household.wav`. |
 | **evaluation_metrics.m** | *Performance Evaluation* | Compares the performance of all denoising algorithms by calculating SNR improvement across methods. Optionally supports PESQ/STOI metrics. Generates summary statistics and bar plots for quantitative comparison. |
 
-A new script `evaluation_metrics.m` computes SNR, PESQ, and STOI automatically.
+
 
 ---
 
@@ -142,4 +142,5 @@ The algorithm is simple, efficient, and suitable for real-time DSP deployment, p
 - Valin, J. (2020). *TinyDNN for embedded speech enhancement.* Mozilla Research.  
 
 ---
+
 
