@@ -39,27 +39,31 @@ Green et al. (2022) found that DNN-based mask enhancement can even reduce intell
 Thus, this project emphasizes **adaptive classical methods**—efficient, interpretable, and low-latency.
 
 ---
-
 ## 🧠 4. Folder Structure
+
+The project is organized as follows:
+
+```plaintext
 project_root/
 │
 ├── Code/
-│ ├── Analyze the original audio.m
-│ ├── Spectral Subtraction and Wiener Filter.m
-│ ├── adaptive_spectral_denoise.m
-│ ├── noise reduction 1.m
-│ └── evaluation_metrics.m
+│   ├── Analyze the original audio.m
+│   ├── Spectral Subtraction and Wiener Filter.m
+│   ├── adaptive_spectral_denoise.m
+│   ├── noise reduction 1.m
+│   └── evaluation_metrics.m
 │
 ├── Data/
-│ ├── household.WAV
-│ ├── Vehicles.WAV
-│ ├── Verbal_Human.WAV
-│ └── TV.WAV
+│   ├── household.WAV
+│   ├── Vehicles.WAV
+│   ├── Verbal_Human.WAV
+│   └── TV.WAV
 │
 ├── Report.md
 ├── README.md
 ├── hearing-aids.pdf
 └── Speech recognition with a hearing-aid.pdf
+```
 
 ## ⚙️ 5. File Descriptions
 
@@ -94,18 +98,19 @@ project_root/
 ---
 
 ### **Run Steps**
-cd Code(matlab)
-% 1. Inspect original signal
+```matlab
+cd Code
+1. Inspect original signal
 run('Analyze the original audio.m');
-% 2. Apply classical methods
+2. Apply classical methods
 run('Spectral Subtraction and Wiener Filter.m');
-% 3. Test wavelet-based denoising (optional exploratory)
+3. Test wavelet-based denoising (optional exploratory)
 run('noise reduction 1.m');
-% 4. Run adaptive spectral subtraction (main method)
+4. Run adaptive spectral subtraction (main method)
 run('adaptive_spectral_denoise.m');
-% 5. Evaluate all results
+5. Evaluate all results
 run('evaluation_metrics.m');
-
+```
 
 
 ## 📈 8. Results and Evaluation
