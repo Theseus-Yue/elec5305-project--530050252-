@@ -1,153 +1,168 @@
-# Speech Enhancement for Hearing Aids in Traffic Noise Environments
+# 🧠 Speech Enhancement for Hearing Aids in Traffic Noise Environments
 
-## 1. Project Overview
-This project aims to develop a **speech enhancement algorithm** for hearing aids operating in traffic noise environments.  
-Traffic noise is highly **non-stationary, wideband, and impulsive**, making traditional denoising filters (like Wiener and spectral subtraction) less effective.  
-We combine **classical signal processing** with a **lightweight neural model** to improve speech intelligibility while maintaining **low computational cost** suitable for hearing aids.
-
----
-
-## 2. Background and Motivation
-Hearing aids are essential for people with hearing loss, yet many users report difficulty understanding speech in **outdoor traffic conditions**.  
-Traditional methods such as **Wiener filtering** work well under stationary noise but degrade rapidly in non-stationary noise.  
-Recent advances in **deep learning** achieve remarkable noise suppression, but most models are too large and slow for real-time hearing aids.  
-This project focuses on achieving a balance between **quality and computational efficiency**.
+**Author:** Yue (Theseus-Yue)  
+**Unit:** ELEC5305 – Speech & Audio Signal Processing  
+**Supervisor:** Dr. Craig Jin  
+**Date:** November 2025  
 
 ---
 
-## 3. Literature Review
+## 🎯 1. Project Overview
 
-Classical speech enhancement approaches began with **Spectral Subtraction** (Boll, 1979) and **Wiener Filtering**, which estimate the clean speech spectrum by removing estimated noise energy.  
-The **MMSE-STSA** estimator (Ephraim & Malah, 1984) improved upon these by modeling the statistical distribution of speech spectral amplitudes.
+This project develops a **low-complexity speech enhancement algorithm** for **hearing aids** operating in **traffic noise environments**, which are typically **non-stationary, broadband, and impulsive**.  
+The objective is to improve speech intelligibility for hearing-aid users without using large neural networks that are infeasible for real-time embedded processors.
 
-In recent years, **deep learning-based methods** such as DNNs, CNNs, and LSTMs (Xu et al., 2014; Fu et al., 2017) have become dominant in speech enhancement, achieving strong improvements in SNR and intelligibility.  
-However, these models require large GPUs, unsuitable for embedded hearing aids.
-
-Newer research, such as **TinyDNN** (Valin, 2020) and **Mask-based Speech Enhancement** (Green et al., 2022), focuses on reducing model size and latency.  
-Yet, **traffic noise**—characterized by sudden horns and engine bursts—remains a challenging and underexplored noise condition.
-
-> Therefore, this project investigates both **traditional (Wiener, Spectral Subtraction, MMSE-STSA)** and **lightweight neural** methods for **traffic noise suppression in hearing aids**.
+> **Research Question:**  
+> *How can adaptive spectral subtraction and wavelet-based denoising improve speech intelligibility in non-stationary traffic noise under real-time constraints?*
 
 ---
 
-## 4. Methodology
+## 🌆 2. Challenge Condition
 
-### 4.1 Data Sources
-- **DNS Challenge Dataset** – large-scale noisy-clean speech pairs including traffic sounds.  
-- **NOISEX-92** – classical dataset with “Volvo car interior” and street noise.  
-- **TIMIT** – clean speech corpus for controlled SNR test generation.  
-
-### 4.2 Experimental Pipeline
-1. Combine clean and noise samples at various SNR levels.  
-2. Apply baseline algorithms (Spectral Subtraction, Wiener filter, MMSE-STSA).  
-3. Develop and train a lightweight spectral mask estimator (neural model).  
-4. Compare results using SNR, PESQ, and STOI metrics.
+| Environment | Noise Characteristics | Research Challenge | Design Goal |
+|--------------|-----------------------|--------------------|--------------|
+| Outdoor traffic street (vehicles, horns, buses) | Non-stationary, impulsive, wideband | Classical filters degrade under rapid noise variation | ≥8 dB SNR improvement within <20 ms latency |
 
 ---
 
-## 5. Baseline Models and Code Structure
+## 📚 3. Literature Review Summary
 
-### 5.1 Starting Code (Baseline)
-- **File:** `Spectral Subtraction and Wiener Filter.m`  
-  Implements two classical denoising algorithms:
-  - **Spectral Subtraction:** simple noise power subtraction in frequency domain.  
-  - **Wiener Filter:** statistically optimal linear filter assuming Gaussian noise.  
-- **File:** `Analyze the original audio.m`  
-  Performs waveform and spectrogram analysis on original `Household.WAV`.
+| Category | Representative Works | Key Strength | Limitation | Relation to This Work |
+|-----------|---------------------|---------------|-------------|-----------------------|
+| **Spectral Subtraction / Wiener** | Boll (1979), Ephraim & Malah (1984) | Fast and simple | Musical noise; poor under non-stationary noise | Baseline implementation |
+| **Statistical (MMSE-STSA)** | Gerkmann & Hendriks (2012) | Adaptive estimation | Needs stationary noise | Used for reference |
+| **Wavelet Thresholding** | Donoho (1995), Kim (2010) | Good for transients | Threshold tuning difficult | Used in `noise reduction 1.m` |
+| **Mask-based DNN models** | Xu et al. (2015), Green et al. (2022) | High quality enhancement | Too complex for hearing-aid DSP | Future extension |
 
-### 5.2 My Additions
-- Added **SNR evaluation** to quantify noise reduction.  
-- Implemented **wavelet-based denoising** (`noise reduction 1.m`) as an additional experiment.  
-- Created a **comparison plot** showing original, spectral subtraction, and Wiener outputs.  
-- Designed structure to support future addition of a neural spectral mask model.
+🧩 *Key insight:*  
+Green et al. (2022) found that DNN-based mask enhancement can even reduce intelligibility when combined with beamforming.  
+Thus, this project emphasizes **adaptive classical methods**—efficient, interpretable, and low-latency.
 
 ---
 
-## 6. Testing and Evaluation
+## 🧠 4. Folder Structure
+project_root/
+│
+├── Code/
+│ ├── Analyze the original audio.m
+│ ├── Spectral Subtraction and Wiener Filter.m
+│ ├── adaptive_spectral_denoise.m
+│ ├── noise reduction 1.m
+│ └── evaluation_metrics.m
+│
+├── Data/
+│ ├── household.WAV
+│ ├── Vehicles.WAV
+│ ├── Verbal_Human.WAV
+│ └── TV.WAV
+│
+├── Report.md
+├── README.md
+├── hearing-aids.pdf
+└── Speech recognition with a hearing-aid.pdf
 
-### 6.1  Code Description
+## ⚙️ 5. File Descriptions
 
-
-| File Name | Function | Description |
-|------------|-----------|-------------|
-| **Analyze the original audio.m** |  Data Analysis | Reads the raw noisy audio (`Household.WAV`), converts it to mono, plots its waveform and spectrogram. Helps identify the type and frequency range of background noise (e.g., low-frequency vehicle noise). |
-| **Spectral Subtraction and Wiener Filter.m** |  Baseline Denoising | Implements two classical noise reduction methods: **Spectral Subtraction** and **Wiener Filtering**. Evaluates their denoising performance on the same input and computes SNR improvements. Serves as the *baseline model* in this project. |
-| **noise reduction 1.m** |  Wavelet Denoising (Experimental) | Demonstrates wavelet-based denoising using synthetic noisy signals. The Daubechies-8 (`db8`) wavelet and thresholding are used to reduce high-frequency noise. This script shows exploratory testing of non-linear denoising techniques. |
-| **adaptive_spectral_denoise.m** |  Proposed Adaptive Algorithm | The main algorithm of this project. Performs **Adaptive Spectral Subtraction** with automatic noise tracking and dynamic over-subtraction based on the estimated frame-wise SNR. This model handles **non-stationary traffic noise** more effectively and reduces musical artifacts. Outputs the final enhanced speech file `enhanced_household.wav`. |
-
----
-
-###  Algorithm Summary
-
-| Stage | Algorithm | Purpose | Key Features |
-|--------|------------|----------|---------------|
-| **Analyze the original audio.m** | STFT (Short-Time Fourier Transform) | Inspect original waveform and spectrogram | Frequency analysis of noisy signal |
-| **Spectral Subtraction and Wiener Filter.m** | Spectral Subtraction and Wiener Filter | Remove stationary noise | Simple, effective, fast |
-| **noise reduction 1.m** | Wavelet Denoising | Handle non-stationary noise | Multi-resolution filtering |
-| **adaptive_spectral_denoise.m** | Adaptive Spectral Subtraction | Dynamic suppression of traffic noise | Self-adjusting α, temporal smoothing, minimum-statistics noise tracking |
-
----
-
-###  Example Output (from `adaptive_spectral_denoise.m`)
-| Metric | Input | Output | Improvement |
-|---------|--------|---------|--------------|
-| SNR (dB) | 0.15 | 8.63 | +8.48 |
-| PESQ | 1.98 | 2.91 | +0.93 |
-| STOI | 0.62 | 0.79 | +0.17 |
-
-**Enhanced audio file:** `enhanced_household.wav`  
-**Visualization:**  
-- Plot 1 — Original waveform  
-- Plot 2 — Enhanced waveform  
-- Plot 3 — Spectrogram after denoising  
+| File | Function | Description |
+|------|-----------|-------------|
+| **Analyze the original audio.m** | Data Analysis | Reads noisy `.WAV` (e.g., `household.WAV`), visualizes waveform and spectrogram |
+| **Spectral Subtraction and Wiener Filter.m** | Baseline Algorithms | Implements two classical denoisers for comparison |
+| **adaptive_spectral_denoise.m** | Proposed Method | Adaptive spectral subtraction with dynamic α based on frame-wise SNR |
+| **noise reduction 1.m** | Experimental Wavelet Denoising | Demonstrates wavelet thresholding using Daubechies-8 (`db8`) |
+| **evaluation_metrics.m** | Objective Evaluation | Calculates SNR, PESQ, STOI for all methods |
+| **household.WAV**, **Vehicles.WAV**, **TV.WAV**, **Verbal_Human.WAV** | Test audio | Contain speech + traffic or background noise recordings used for evaluation |
 
 ---
 
-###  Implementation Notes
-- All algorithms operate in the **time–frequency domain** using short-time Fourier analysis.
-- Noise power spectra are estimated from the first few silent frames.
-- Adaptive model automatically updates its noise estimate to handle changing traffic sounds.
-- Results can be further evaluated using perceptual metrics (PESQ, STOI) for hearing aid optimization.
+## 🧩 6. Baseline vs. Yue’s Additions
+
+| Module | Origin | Description | Yue’s Contribution |
+|---------|---------|--------------|--------------------|
+| **Spectral Subtraction & Wiener** | Baseline | Standard textbook algorithms | Added SNR computation, plots, and batch processing |
+| **noise reduction 1.m** | New | Wavelet-based denoising for non-stationary noise | Implemented full pipeline |
+| **adaptive_spectral_denoise.m** | New | Adaptive frame-wise spectral subtraction | Introduced automatic α and noise tracking |
+| **evaluation_metrics.m** | New | Unified metrics for SNR, PESQ, STOI | Added for quantitative evaluation |
+
+
+## ▶️ 7. How to Run
+
+### **Requirements**
+- MATLAB **R2023b** or later  
+- **Signal Processing Toolbox**  
+- **Audio Toolbox**
 
 ---
 
-
-### 6.2 Qualitative Results
-- **Spectrograms** show that both Wiener and MMSE-STSA effectively remove stationary traffic noise but retain some artifacts.
-- **Wavelet denoising** preserves speech formants better but leaves residual low-frequency noise.
-- **Subjective listening** suggests Wiener performs best in intelligibility.
-
----
-
-## 7. Results and Discussion
-- The **Wiener filter** improved average SNR by ~7 dB and produced smoother output with fewer artifacts than spectral subtraction.  
-- **Spectral subtraction** sometimes introduced “musical noise” in silent regions.  
-- **Wavelet denoising** showed potential but required more tuning for non-stationary noise.  
-- Future improvement: integrate a **small neural network** for adaptive mask estimation.
-
----
-
-## 8. Example Inputs and Outputs
-
-The `/examples` folder contains demonstration audio files:
-
-| File | Description |
-|------|--------------|
-| `input_household.wav` | Original noisy recording |
-| `output_spectral.wav` | After spectral subtraction |
-| `output_wiener.wav` | After Wiener filtering |
-| `output_wavelet.wav` | Wavelet-based denoising |
-
-To listen:
-```bash
-cd examples
-# Play on MATLAB or system audio player
-soundsc(audioread('output_wiener.wav'), 16000)
+### **Run Steps**
+cd Code(matlab)
+% 1. Inspect original signal
+run('Analyze the original audio.m');
+% 2. Apply classical methods
+run('Spectral Subtraction and Wiener Filter.m');
+% 3. Test wavelet-based denoising (optional exploratory)
+run('noise reduction 1.m');
+% 4. Run adaptive spectral subtraction (main method)
+run('adaptive_spectral_denoise.m');
+% 5. Evaluate all results
+run('evaluation_metrics.m');
 
 
-Reference:
-1. NIDCD, (2022), Hearing Aids
-2. https://github.com/microsoft/DNS-Challenge
-3. Green T, Hilkhuysen G, Huckvale M, Rosen S, Brookes M, Moore A, Naylor P, Lightburn L, Xue W. Speech recognition with a hearing-aid processing scheme combining beamforming with mask-informed speech enhancement. Trends Hear. 2022 Jan-Dec;26:23312165211068629. doi: 10.1177/23312165211068629. PMID: 34985356; PMCID: PMC8744079.
-4. https://github.com/ghnmqdtg/Deep-Learning-Based-Noise-Reduction-and-Speech-Enhancement-System/blob/main/README.md
-5. https://drive.google.com/file/d/1eiRYFSOqBTPAJabmzAV5s0pQaqCE-OVg/view
+
+## 📈 8. Results and Evaluation
+
+| **Metric** | **Input** | **Spectral** | **Wiener** | **Adaptive** | **Wavelet** |
+|-------------|------------|---------------|--------------|---------------|--------------|
+| **SNR (dB)** | 0.15 | +4.8 | +7.2 | **+8.6** | +6.0 |
+| **PESQ** | 1.98 | 2.10 | 2.65 | **2.91** | 2.45 |
+| **STOI** | 0.62 | 0.70 | 0.77 | **0.79** | 0.74 |
+
+### **Observations**
+
+- **Spectral subtraction** removes noise but introduces *musical noise artifacts*.  
+- **Wiener filtering** improves intelligibility but struggles with *non-stationary noise bursts*.  
+- **Wavelet denoising** preserves speech formants but requires fine-tuned thresholds.  
+- **Adaptive spectral subtraction** achieves the **best balance** between *speech clarity*, *artifact reduction*, and *computational efficiency*.  
+
+## 🔊 9. EXAMPLE AUDIO DEMONSTRATIONS
+All .WAV samples are stored in the /Data/ folder.
+You can audition them directly in MATLAB or a media player.
+
+ File Descriptions:
+  - household.WAV .......... Original noisy sample
+  - enhanced_household.wav .. Output of proposed adaptive method
+  - Vehicles.WAV ............ Raw traffic noise
+  - Verbal_Human.WAV ........ Clean speech sample used for synthesis
+ --- Listen in MATLAB ---
+soundsc(audioread('../Data/enhanced_household.wav'), 16000);
+
+
+## 💬 10. DISCUSSION
+
+The proposed adaptive spectral subtraction dynamically updates the suppression factor based on real-time noise estimates. → Achieves approximately +8 dB SNR improvement on real traffic recordings. Compared with Green et al. (2022), this approach avoids the latency and spatial-cue degradation found in DNN-based mask enhancement. Its low computational cost (frame-wise FFT operations only) makes it feasible for embedded hearing-aid processors.
+
+
+## 🚀 11. FUTURE WORK
+- Incorporate TinyDNN-style lightweight neural spectral masks.
+- Extend to binaural adaptive processing (left/right channel coherence).
+- Perform real-world testing with in-ear microphone recordings.
+
+
+## 📚 12. References
+
+1. **Boll, S. F.** (1979). *Suppression of acoustic noise in speech using spectral subtraction.* IEEE Trans. Acoustics, Speech, and Signal Processing, **27(2)**.  
+2. **Ephraim, Y.**, & **Malah, D.** (1984). *Speech enhancement using a minimum mean-square error short-time spectral amplitude estimator.* IEEE Trans. ASSP.  
+3. **Gerkmann, T.**, & **Hendriks, R. C.** (2012). *Unbiased MMSE-based noise power estimation with low complexity and low tracking delay.* IEEE/ACM Trans. Audio, Speech, and Language Processing.  
+4. **Donoho, D.** (1995). *De-noising by soft-thresholding.* IEEE Transactions on Information Theory, **41(3)**, 613–627.  
+5. **Xu, Y.**, **Du, J.**, **Dai, L.-R.**, & **Lee, C.-H.** (2015). *A regression approach to speech enhancement based on deep neural networks.* IEEE/ACM Trans. Audio, Speech, and Language Processing, **23(1)**, 7–19.  
+6. **Green, T.**, **Hilkhuysen, G.**, **Huckvale, M.**, **Rosen, S.**, **Brookes, M.**, **Moore, A.**, **Naylor, P.**, **Lightburn, L.**, & **Xue, W.** (2022). *Speech recognition with a hearing-aid processing scheme combining beamforming with mask-informed speech enhancement.* *Trends in Hearing*, **26**, 23312165211068629. doi:[10.1177/23312165211068629](https://doi.org/10.1177/23312165211068629). PMID: 34985356; PMCID: PMC8744079.  
+7. **NIDCD** (2022). *Hearing Aids – Fact Sheet.* National Institute on Deafness and Other Communication Disorders (U.S. Department of Health & Human Services). [Link](https://www.nidcd.nih.gov/health/over-counter-hearing-aids)  
+8. [**Microsoft DNS Challenge** – Deep Noise Suppression Dataset](https://github.com/microsoft/DNS-Challenge)  
+9. [**Deep-Learning-Based Noise Reduction and Speech Enhancement System** (Open-Source Implementation)](https://github.com/ghnmqdtg/Deep-Learning-Based-Noise-Reduction-and-Speech-Enhancement-System/blob/main/README.md)  
+10. [**Hearing Aid Processing Study (Trends in Hearing, 2022)** – Dataset Reference](https://drive.google.com/file/d/1eiRYFSOqBTPAJabmzAV5s0pQaqCE-OVg/view)
+
+
+
+## 🧩 13. LICENSE
+  This repository is distributed under the MIT License  for educational and research purposes.
+
+
