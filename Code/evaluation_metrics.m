@@ -1,53 +1,89 @@
 % ==========================================================
-% File: evaluation_metrics.m
-% Purpose: Compare denoising results (SNR improvement)
+% File: evaluation_metrics.m  (Enhanced Version)
+% Purpose: Compare denoising results (SNR + PESQ + STOI)
 % ----------------------------------------------------------
 % This script loads original, noisy, and enhanced signals
-% and computes performance metrics (SNR improvement).
+% and computes performance metrics including SNR, PESQ, STOI.
 % ==========================================================
 
 clear; close all; clc;
 
 fprintf('--- Evaluating Speech Enhancement Performance ---\n');
 
-% Load test audio files
+%% Load test audio files
 x_noisy = audioread('household.WAV');
 x_wiener = audioread('household_wiener.wav');
 x_adaptive = audioread('enhanced_household.wav');
 
-% If you have clean reference (optional)
+%% Optional clean reference
 if isfile('input_clean.wav')
     x_clean = audioread('input_clean.wav');
+    fprintf('Using clean reference: input_clean.wav\n');
 else
-    warning('No clean reference available. Using estimated reference = denoised Wiener result.');
-    x_clean = x_wiener; % fallback for comparison
+    warning('No clean reference available. Using Wiener output as pseudo-clean reference.');
+    x_clean = x_wiener;
 end
 
-% Ensure equal length
+%% Ensure equal length
 min_len = min([length(x_noisy), length(x_wiener), length(x_adaptive), length(x_clean)]);
 x_noisy = x_noisy(1:min_len);
 x_wiener = x_wiener(1:min_len);
 x_adaptive = x_adaptive(1:min_len);
 x_clean = x_clean(1:min_len);
 
-% --- Compute SNR values ---
+%% -----------------------------------------------------------
+% 1. Compute SNR
+% -----------------------------------------------------------
 snr_noisy = snr(x_clean, x_noisy - x_clean);
 snr_wiener = snr(x_clean, x_wiener - x_clean);
 snr_adaptive = snr(x_clean, x_adaptive - x_clean);
 
 fprintf('\nSNR (dB):\n');
-fprintf('Noisy Input        : %.2f dB\n', snr_noisy);
-fprintf('Wiener Filter      : %.2f dB\n', snr_wiener);
+fprintf('Noisy Input         : %.2f dB\n', snr_noisy);
+fprintf('Wiener Filter       : %.2f dB\n', snr_wiener);
 fprintf('Adaptive Subtraction: %.2f dB\n', snr_adaptive);
 fprintf('----------------------------------------------\n');
-fprintf('Wiener Improvement : +%.2f dB\n', snr_wiener - snr_noisy);
+fprintf('Wiener Improvement  : +%.2f dB\n', snr_wiener - snr_noisy);
 fprintf('Adaptive Improvement: +%.2f dB\n', snr_adaptive - snr_noisy);
 fprintf('----------------------------------------------\n');
 
-% --- Visualization ---
+%% -----------------------------------------------------------
+% 2. PESQ & STOI Evaluation (Audio Toolbox Required)
+% -----------------------------------------------------------
+fprintf('\nChecking PESQ / STOI availability...\n');
+
+hasAudioTB = license('test','Audio_Toolbox');
+
+if hasAudioTB
+    fprintf('Audio Toolbox detected. Running PESQ/STOI...\n');
+
+    % PESQ
+    pesq_wien = pesq(x_clean, x_wiener, 44100);
+    pesq_adapt = pesq(x_clean, x_adaptive, 44100);
+
+    % STOI
+    stoi_wien = stoi(x_clean, x_wiener, 44100);
+    stoi_adapt = stoi(x_clean, x_adaptive, 44100);
+
+    fprintf('\nPESQ Scores:\n');
+    fprintf('Wiener Filter       : %.3f\n', pesq_wien);
+    fprintf('Adaptive Subtraction: %.3f\n', pesq_adapt);
+
+    fprintf('\nSTOI Scores:\n');
+    fprintf('Wiener Filter       : %.3f\n', stoi_wien);
+    fprintf('Adaptive Subtraction: %.3f\n', stoi_adapt);
+
+else
+    fprintf('Audio Toolbox NOT available — skipping PESQ/STOI.\n');
+end
+
+%% -----------------------------------------------------------
+% 3. SNR Visualization
+% -----------------------------------------------------------
 figure('Name','SNR Comparison');
 bar([snr_noisy, snr_wiener, snr_adaptive]);
 set(gca, 'XTickLabel', {'Noisy', 'Wiener', 'Adaptive'});
 ylabel('SNR (dB)');
 title('SNR Comparison Across Methods');
 grid on;
+
