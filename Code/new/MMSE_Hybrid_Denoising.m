@@ -1,5 +1,5 @@
 % =====================================================================
-% ELEC5305 — Hybrid-MMSE Speech Denoising
+% ELEC5305 — MMSE_Hybrid_Denoising
 %
 % This script performs full speech denoising using the proposed
 % Hybrid-MMSE algorithm. It includes:
