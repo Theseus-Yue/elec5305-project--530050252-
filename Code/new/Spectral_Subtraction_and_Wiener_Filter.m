@@ -1,16 +1,25 @@
-% ==========================================================
-% File: Spectral Subtraction and Wiener Filter.m
-% Purpose: Baseline implementation of two classical denoising algorithms
-% ----------------------------------------------------------
-% 1. Spectral Subtraction
-% 2. Wiener Filter
+% =====================================================================
+% ELEC5305 — Baseline Denoising Algorithms
 %
-% This code defines both algorithms as functions and applies them
-% to the same input signal for comparison. It computes the resulting
-% SNR improvements and plots time-domain results.
+% This script implements two classical speech denoising methods:
 %
-% Added by: Yue (ELEC5305 Project)
-% ==========================================================
+%   • Spectral Subtraction
+%        - Noise PSD estimated from first few frames
+%        - Over-subtraction and spectral flooring
+%        - Simple but prone to musical noise
+%
+%   • Wiener Filter
+%        - Frequency-domain gain based on estimated SNR
+%        - Smooth, low-complexity baseline widely used in DSP
+%
+% The script processes the noisy speech signal, outputs enhanced audio
+% (y_spectral, y_wiener), compares waveforms, and computes SNR improvements.
+%
+% Purpose:
+%   To provide baseline reference algorithms for evaluating the performance
+%   of more advanced methods (Adaptive Spectral Subtraction, Hybrid-MMSE).
+% =====================================================================
+
 
 clear all;
 close all;
