@@ -1,13 +1,27 @@
 % =====================================================================
-% ELEC5305 Full Speech Denoising Pipeline
-% Author: Yue (Theseus-Yue)
-% Features:
-%   ✔ Hybrid-MMSE denoising
-%   ✔ Baseline: Noisy vs Enhanced vs Clean comparison
-%   ✔ Three-way spectrogram comparison
-%   ✔ Frame-wise SNR curves
-%   ✔ Audio statistics table (RMS, ZCR, centroid, bandwidth)
+% ELEC5305 — Full Speech Denoising Pipeline
+%
+% This script implements the complete denoising workflow used in the
+% final project. It includes:
+%
+%   • Clean + noise loading and SNR-controlled noisy synthesis
+%   • Hybrid-MMSE enhancement (final and best-performing algorithm):
+%         - Minimum-statistics noise PSD estimation
+%         - Decision-directed a priori SNR estimation
+%         - MMSE-LSA gain (Ephraim–Malah)
+%         - Gain flooring for stability
+%
+%   • Global SNR and frame-wise SNR evaluation
+%   • Waveform and spectrogram comparison (Noisy vs Enhanced vs Clean)
+%   • Audio statistics extraction (RMS, ZCR, centroid, bandwidth)
+%   • Saving enhanced audio for listening/analysis
+%
+% Purpose:
+%   To demonstrate the full denoising pipeline and show how the proposed
+%   Hybrid-MMSE algorithm suppresses noise while preserving speech, making
+%   it suitable for real-time hearing-aid applications.
 % =====================================================================
+
 
 clear; close all; clc;
 
