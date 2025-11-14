@@ -1,19 +1,26 @@
-% ==========================================================
+% =====================================================================
+% ELEC5305 — Adaptive Spectral Subtraction Denoising
+%
+% This script implements an improved spectral subtraction algorithm with:
+%
+%   • Adaptive over-subtraction (alpha depends on frame-level SNR)
+%   • Minimum-statistics noise tracking
+%   • Spectral flooring to avoid negative energy
+%   • STFT/ISTFT time–frequency processing
+%
+% The method is more robust than classical spectral subtraction and
+% reduces musical noise while better handling non-stationary household
+% and traffic noise.
+%
+% Outputs:
+%   - Enhanced audio (enhanced_household.wav)
+%   - SNR improvement (input vs output)
+%   - Waveform and spectrogram visualization
+%
 % Purpose:
-%   Perform adaptive speech denoising using an improved
-%   spectral subtraction algorithm.
-%
-% Features:
-%   1. Automatic noise estimation from silent segments
-%   2. Adaptive over-subtraction for non-stationary noise
-%   3. Temporal smoothing to reduce musical artifacts
-%   4. SNR calculation and spectrogram visualization
-%
-% Input:  noisy_synthesized.wav  (noisy audio)
-% Output: enhanced_household.wav
-%
-% Author: Yue (Theseus-Yue)
-% ==========================================================
+%   To provide a stronger classical baseline before moving to the
+%   final Hybrid-MMSE algorithm.
+% =====================================================================
 
 clear; close all; clc;
 
