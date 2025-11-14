@@ -9,7 +9,7 @@
 %   3. Temporal smoothing to reduce musical artifacts
 %   4. SNR calculation and spectrogram visualization
 %
-% Input:  household.WAV  (noisy audio)
+% Input:  noisy_synthesized.wav  (noisy audio)
 % Output: enhanced_household.wav
 %
 % Author: Yue (Theseus-Yue)
@@ -18,7 +18,7 @@
 clear; close all; clc;
 
 %% Parameters
-audioFile = 'household.WAV';
+audioFile = 'noisy_synthesized.wav';
 nFFT = 1024;           % FFT size
 hop = nFFT/2;          % hop size (50% overlap)
 alpha_min = 1.5;       % minimum over-subtraction factor
