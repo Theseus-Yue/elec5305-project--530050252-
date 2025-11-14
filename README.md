@@ -1,6 +1,6 @@
 # Speech Enhancement for Hearing Aids in Traffic Noise Environments
 
-**Author:** Yue (Theseus-Yue)  
+**Author:** Yue Yu  
 **Unit:** ELEC5305 – Speech & Audio Signal Processing  
 **Supervisor:** Dr. Craig Jin  
 **Date:** November 2025  
