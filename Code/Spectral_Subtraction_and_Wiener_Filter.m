@@ -16,7 +16,7 @@ clear all;
 close all;
 
 %% Read audio signal
-[x, Fs] = audioread('household.WAV');
+[x, Fs] = audioread('noisy_synthesized.wav');
 
 % Convert to mono if stereo
 if size(x,2) > 1
@@ -115,4 +115,3 @@ snr_wiener = snr(y_wiener);
 fprintf('Original Signal SNR: %.2f dB\n', snr_original);
 fprintf('Spectral Subtraction SNR: %.2f dB\n', snr_spectral);
 fprintf('Wiener Filter SNR: %.2f dB\n', snr_wiener);
-
