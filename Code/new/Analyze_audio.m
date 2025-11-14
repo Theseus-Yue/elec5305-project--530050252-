@@ -1,3 +1,26 @@
+% =====================================================================
+%  ELEC5305 — Audio Analysis Module
+%
+%  This script analyzes the noisy speech signal (noisy_synthesized.wav)
+%  using key speech-audio features. It provides insight into the
+%  characteristics of the noise and speech mixture before denoising.
+%
+%  Methods included:
+%    • Time-domain waveform inspection
+%    • STFT and spectrogram visualization
+%    • RMS energy and peak amplitude
+%    • Zero-Crossing Rate (ZCR)
+%    • Spectral centroid and bandwidth
+%    • Dominant frequency detection
+%    • Low/Mid/High frequency energy distribution
+%    • Average magnitude spectrum
+%    • Frame-wise energy analysis
+%
+%  Purpose:
+%    These measurements help understand noise structure, identify
+%    dominant frequency bands, and explain why advanced denoising
+%    methods (Adaptive / MMSE) are necessary.
+% =====================================================================
 
 
 audioFile = 'noisy_synthesized.wav';
