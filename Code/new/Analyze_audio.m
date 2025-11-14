@@ -22,7 +22,6 @@
 %    methods (Adaptive / MMSE) are necessary.
 % =====================================================================
 
-
 audioFile = 'noisy_synthesized.wav';
 nFFT = 2048;  % FFT length
 hop = 512;    % STFT hop size
