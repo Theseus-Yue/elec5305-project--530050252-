@@ -1,6 +1,25 @@
-% ==========================================================
-% ELEC5305 — Denoising Demo (FINAL FIXED)
-% ==========================================================
+% =====================================================================
+% ELEC5305 — Hybrid-MMSE Speech Denoising
+%
+% This script performs full speech denoising using the proposed
+% Hybrid-MMSE algorithm. It includes:
+%
+%   • Clean + noise loading and SNR-controlled mixing
+%   • STFT-based noisy speech synthesis
+%   • Hybrid-MMSE enhancement:
+%        - Minimum-statistics noise PSD estimation
+%        - Decision-directed a priori SNR estimation
+%        - MMSE-LSA gain (Ephraim–Malah)
+%        - Gain flooring for stability
+%
+%   • Input vs Output SNR calculation
+%   • Noisy / Enhanced / Clean spectrogram comparison
+%
+% Purpose:
+%   To demonstrate the final and best-performing denoising algorithm
+%   in this project, showing clear SNR improvement and spectral noise
+%   suppression suitable for hearing-aid applications.
+% =====================================================================
 
 clear; close all; clc;
 
