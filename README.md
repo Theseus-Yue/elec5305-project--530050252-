@@ -8,7 +8,7 @@
 
 ## 1. Project Overview
 
-This project investigates classical spectral-domain speech enhancement techniques for hearing aids operating in **non-stationary household and traffic noise**.  
+This project investigates classical spectral-domain speech enhancement techniques for hearing aids operating in **non-stationary and traffic noise**.  
 Given the strict limitations of hearing-aid DSP chips (latency < 10 ms, low memory, low power), the project focuses on lightweight classical algorithms instead of large neural models.
 
 Four enhancement pipelines were implemented:
