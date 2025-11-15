@@ -1,5 +1,5 @@
 % =====================================================================
-% ELEC5305 — Baseline Denoising Algorithms
+% ELEC5305 — Spectral_Subtraction_and_Wiener_Filter
 %
 % This script implements two classical speech denoising methods:
 %
