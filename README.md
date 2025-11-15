@@ -40,8 +40,141 @@ All files are:
 Noisy signals are synthesized at **−5 dB SNR**.
 
 ---
+---
 
-## 3. Project File Structure
+## 3. Code Files
+
+This project consists of **five main MATLAB scripts**, each representing a stage in the full speech-enhancement pipeline.  
+Below is a detailed explanation of what each script does and the algorithms implemented inside.
+
+---
+
+### **3.1 Analyze_audio.m — Audio Characterisation Module**
+
+**Purpose:**  
+To understand the statistical and spectral structure of the noisy input signal before enhancement.
+
+**Key Methods Implemented:**
+- Time-domain waveform analysis  
+- STFT for spectrogram  
+- RMS energy calculation  
+- Peak amplitude  
+- Zero-Crossing Rate (ZCR)  
+- Spectral centroid  
+- Spectral bandwidth  
+- Dominant frequency detection  
+- Average magnitude spectrum  
+- Frame-wise short-term energy  
+
+**Role in project:**  
+Provides insight into noise distribution (e.g., energy in 0–500 Hz and 4–8 kHz), helping justify the need for advanced algorithms.
+
+---
+
+### **3.2 Spectral_Subtraction_and_Wiener_Filter.m — Classical Baseline Algorithms**
+
+**Purpose:**  
+Implements the two most widely used foundational speech-enhancement techniques.
+
+#### **Algorithms:**
+
+#### **(1) Spectral Subtraction**
+- Noise PSD estimated from first 5 frames  
+- Over-subtraction factor α  
+- Spectral flooring β  
+- Converts PSD back to magnitude + phase  
+
+**Strength:** Simple & fast  
+**Weakness:** Musical noise under non-stationary noise  
+
+#### **(2) Wiener Filter**
+- Wiener gain: H = SNR / (1 + SNR)  
+- Noise PSD estimated from first few frames  
+- Applied frame-by-frame in frequency domain  
+
+**Strength:** Smooth output  
+**Weakness:** Performs poorly in fast-changing noise  
+
+**Role in project:**  
+Provides the baseline for comparing advanced methods.
+
+---
+
+### **3.3 adaptive_spectral_denoise.m — Adaptive Spectral Subtraction**
+
+**Purpose:**  
+Improve the classical spectral subtraction method by making it responsive to time-varying noise.
+
+**Key Methods:**
+- **Adaptive α(t)** based on frame SNR  
+- Minimum-statistics noise estimation  
+- Spectral flooring to avoid negative magnitudes  
+- Full STFT → magnitude modification → ISTFT  
+
+**Advantages:**
+- Reduces musical noise  
+- More stable for dynamic household noise  
+
+**Limitations:**
+- Still linear  
+- Lacks statistical speech modelling  
+- Limited enhancement when noise varies too quickly  
+
+**Role in project:**  
+Intermediate step showing improvement beyond classical baselines.
+
+---
+
+### **3.4 FULL_MMSE_HYBRID_PIPELINE.m — Final Hybrid-MMSE Enhancement Pipeline**
+
+**Purpose:**  
+The main full-system script running the final Hybrid-MMSE algorithm, SNR evaluation, waveform analysis, spectrograms, and statistics.
+
+**Core Components:**
+1. Load clean + noise recordings  
+2. Synthesize noisy mixture at −5 dB  
+3. Apply **Hybrid-MMSE estimator (Ephraim–Malah)**  
+4. Compute global SNR  
+5. Compute frame-wise SNR  
+6. Generate:
+   - Spectrograms (noisy vs enhanced vs clean)  
+   - Waveform comparison  
+   - Audio statistics table (RMS, ZCR, centroid, bandwidth)  
+7. Save enhanced output  
+
+#### **Hybrid-MMSE Algorithm Details**
+- **Minimum-statistics noise PSD estimation**  
+- **Decision-directed a priori SNR estimator**  
+- **Nonlinear MMSE-LSA gain computation**  
+- **Gain flooring (Gmin)** for stability  
+- **Phase preservation** (ISTFT uses original noisy phase)  
+
+**Why it’s the final method:**  
+- Best noise suppression  
+- No musical noise  
+- Very low computational complexity  
+- Real-time hearing-aid friendly  
+
+---
+
+### **3.5 evaluation_metrics.m — Quality Metrics**
+
+**Purpose:**  
+Evaluate speech enhancement performance using common objective metrics.
+
+**Metrics Included (or placeholder for external tools):**
+- **SNR**  
+- **PESQ** (Perceptual Evaluation of Speech Quality)  
+- **STOI** (Short-Time Objective Intelligibility)  
+
+**Role in project:**  
+Used for scientific evaluation of all enhancement methods.
+
+---
+
+
+
+## 4. Project File Structure
 ```
 project_root/
 │
@@ -68,27 +201,27 @@ project_root/
 
 ---
 
-## 4. Method Overview
+## 5. Method Overview
 
-### **4.1 Spectral Subtraction (Baseline)**
+### **5.1 Spectral Subtraction (Baseline)**
 - Noise PSD from first 5 frames  
 - Over-subtraction + flooring  
 - Fast but introduces **musical noise**  
 - Unstable in non-stationary noise  
 
-### **4.2 Wiener Filter (Baseline)**
+### **5.2 Wiener Filter (Baseline)**
 - Classical MMSE linear estimator  
 - Good for stationary noise  
 - Fails when noise PSD changes rapidly  
 
-### **4.3 Adaptive Spectral Subtraction**
+### **5.3 Adaptive Spectral Subtraction**
 Improvements:
 - Adaptive α(t) based on frame-level SNR  
 - Minimum-statistics noise tracking  
 - Fewer artifacts  
 - Still lacks nonlinear speech modelling  
 
-### **4.4 Final Method: Hybrid-MMSE (Ephraim–Malah)**
+### **5.4 Final Method: Hybrid-MMSE (Ephraim–Malah)**
 - Decision-directed a priori SNR  
 - Nonlinear MMSE-LSA estimator  
 - Minimum-statistics noise PSD estimation  
@@ -97,10 +230,10 @@ Improvements:
 
 ---
 
-## 5. Real Experimental Results  
+## 6. Real Experimental Results  
 *(Updated using ELEC5305_Project.pdf)*
 
-### **5.1 Global SNR Results (True SNR Calculation)**
+### **6.1 Global SNR Results (True SNR Calculation)**
 
 | Algorithm | Input SNR (dB) | Output SNR (dB) |
 |-----------|----------------|------------------|
@@ -116,7 +249,7 @@ Improvements:
 
 ---
 
-### **5.2 Audio Statistics (Noisy vs Enhanced vs Clean)**
+### **6.2 Audio Statistics (Noisy vs Enhanced vs Clean)**
 
 | Metric | Noisy | Hybrid-MMSE | Clean |
 |--------|--------|------------|--------|
@@ -130,7 +263,7 @@ Improvements:
 
 ---
 
-### **5.3 Frame-wise SNR Comparison**
+### **6.3 Frame-wise SNR Comparison**
 
 - Noisy: fluctuates from **−50 dB to +5 dB**, highly unstable  
 - Enhanced (Hybrid-MMSE): stabilises near **0–2 dB**, showing strong noise suppression  
@@ -139,14 +272,14 @@ Improvements:
 
 ---
 
-### **5.4 Waveform Comparison Insights**
+### **6.4 Waveform Comparison Insights**
 - Noisy signal shows large random fluctuations  
 - Hybrid-MMSE output shows smoother envelope  
 - Speech structure better preserved  
 
 ---
 
-### **5.5 Spectrogram Comparison**
+### **6.5 Spectrogram Comparison**
 Hybrid-MMSE achieves:  
 - Clear reduction of high-frequency noise  
 - Restoration of formant bands (1–3 kHz)  
@@ -154,7 +287,7 @@ Hybrid-MMSE achieves:
 
 ---
 
-## 6. Why Classical Methods Fail
+## 7. Why Classical Methods Fail
 
 ### **Spectral Subtraction**
 ❌ Over-subtraction → spectral holes  
@@ -173,7 +306,7 @@ Hybrid-MMSE achieves:
 
 ---
 
-## 7. Why Hybrid-MMSE Works (and is Hearing-Aid Suitable)
+## 8. Why Hybrid-MMSE Works (and is Hearing-Aid Suitable)
 
 ✔ Nonlinear MMSE estimator  
 ✔ Decision-directed SNR smoothing  
@@ -187,7 +320,7 @@ Hybrid-MMSE = **best trade-off between clarity, stability, and computational cos
 
 ---
 
-## 8. How to Run the Project
+## 9. How to Run the Project
 
 In MATLAB:
 
