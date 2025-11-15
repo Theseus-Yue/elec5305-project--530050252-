@@ -1,5 +1,5 @@
 % =====================================================================
-%  ELEC5305 — Audio Analysis Module
+%  ELEC5305 — Analyze_audio
 %
 %  This script analyzes the noisy speech signal (noisy_synthesized.wav)
 %  using key speech-audio features. It provides insight into the
