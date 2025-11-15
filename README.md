@@ -1,4 +1,4 @@
-# Speech Enhancement for Hearing Aids in Non-Stationary Household Noise Environments  
+# Speech Enhancement for Hearing Aids in Non-Stationary Noise Environments  
 **ELEC5305 – Speech & Audio Signal Processing**  
 **Author:** Yue Yu  
 **Supervisor:** Dr. Craig Jin  
